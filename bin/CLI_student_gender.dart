@@ -4,7 +4,14 @@ void main() {
   const String appTitle = "===== Student Grader v1.0 ====="; // const
   print("$appTitle");
 
+  //set (unique subjects)
+  final Set<String> availableSubjects = {"Math", "English", "Science"};//final
+
+   // List of students (each student is a Map)
+  List<Map<String, dynamic>> students = [];
+
   bool running = true;
+
 
   // do-while loop (Main menu loop)
   do {
@@ -26,7 +33,7 @@ void main() {
     //switch case
     switch (choice) {
       case "1":
-        print("Add Student feature coming soon...");
+        addStudent(students,availableSubjects);
         break;
 
       case "2":
@@ -61,4 +68,54 @@ void main() {
         print("Invalid choice! Try again.");
     }
   } while (running);
+}
+
+//Add Student
+void addStudent(List<Map<String, dynamic>> students,Set<String> subjects) {
+  print("\n--- Add Student ---");
+
+  stdout.write("Enter student name: ");
+  String name = stdin.readLineSync() ?? "";
+
+  //while loop(input validation)
+  while (name.trim().isEmpty) {
+    print("Name cannot be empty!");
+    stdout.write("Enter student name again: ");
+    name = stdin.readLineSync() ?? "";
+  }
+
+  Map<String, int> scores = {};
+
+  //for in loop
+  for (String subject in subjects) {
+    stdout.write("Enter $subject score: ");
+    int score = int.tryParse(stdin.readLineSync() ?? "") ?? 0;
+    scores[subject] = score;
+  }
+  stdout.write("Enter bonus marks (optional): ");
+  String bonusInput = stdin.readLineSync() ?? "";
+  //int?(nullable)
+  int? bonus;
+
+  if (bonusInput.trim().isNotEmpty) {
+    bonus = int.tryParse(bonusInput);
+  }
+
+  // ??= null-aware assign
+  bonus ??= 0;
+
+  stdout.write("Enter comment (optional): ");
+  String? comment = stdin.readLineSync(); // String?
+
+  Map<String, dynamic> student = {
+    "name": name,
+    "scores": scores,
+    "bonus": bonus,
+    "comment": comment,
+  };
+
+
+  students.add(student);
+
+  print("Student Added Successfully!\n");
 }
